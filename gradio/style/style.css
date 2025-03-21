@@ -1,0 +1,6 @@
+button.flag-button::after {
+    content: "Reportar"; /* Novo nome do botão */
+}
+button.flag-button {
+    content: none; /* Remove o texto original */
+}

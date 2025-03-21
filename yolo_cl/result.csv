@@ -1,0 +1,62 @@
+0
+"ultralytics.engine.results.Results object with attributes:
+
+boxes: None
+keypoints: None
+masks: None
+names: {0: 'cloudy', 1: 'rain', 2: 'shine', 3: 'sunrise'}
+obb: None
+orig_img: array([[[ 69,  60,  47],
+        [ 79,  70,  57],
+        [ 82,  70,  58],
+        ...,
+        [147, 139, 110],
+        [150, 142, 113],
+        [152, 144, 115]],
+
+       [[ 78,  66,  54],
+        [ 82,  70,  58],
+        [ 85,  73,  61],
+        ...,
+        [142, 134, 105],
+        [145, 137, 108],
+        [152, 144, 115]],
+
+       [[ 80,  67,  53],
+        [ 82,  69,  55],
+        [ 90,  77,  63],
+        ...,
+        [152, 144, 115],
+        [150, 142, 113],
+        [152, 144, 115]],
+
+       ...,
+
+       [[112,  93,  80],
+        [114,  95,  82],
+        [115,  96,  83],
+        ...,
+        [146, 128, 105],
+        [145, 126, 105],
+        [146, 127, 106]],
+
+       [[110,  91,  78],
+        [113,  94,  81],
+        [115,  96,  83],
+        ...,
+        [144, 126, 103],
+        [143, 125, 102],
+        [143, 124, 103]],
+
+       [[109,  90,  77],
+        [113,  94,  81],
+        [118,  99,  86],
+        ...,
+        [139, 121,  98],
+        [138, 120,  97],
+        [139, 120,  99]]], dtype=uint8)
+orig_shape: (360, 540)
+path: '/media/guilherme/Novo volume/HacktoonBF/yolo_cl/mytest/rain_model.jpg'
+probs: ultralytics.engine.results.Probs object
+save_dir: 'runs/classify/predict'
+speed: {'preprocess': 33.49924087524414, 'inference': 3.0062198638916016, 'postprocess': 0.0553131103515625}"
