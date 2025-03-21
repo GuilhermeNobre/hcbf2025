@@ -20,7 +20,12 @@ def detect_plague(input_img):
     plague_detected = names_dict[np.argmax(probs)] 
     #print(names_dict[np.argmax(probs)], np.max(probs))
 
-    return plague_detected, gr.update(visible=True)
+    return plague_detected
+
+def alerts_test():
+    #gr.Info("Alerts test")
+    #gr.Warning("Alerts test")
+    raise gr.Error("Alerts test")
 
 with gr.Blocks(theme=gr.themes.Soft()) as base_front:
     gr.Markdown("# Plague Detection")
@@ -46,15 +51,15 @@ with gr.Blocks(theme=gr.themes.Soft()) as base_front:
         #     outputs=[output_text, comment_section]
         # )
 
-        with gr.Group(visible=False) as comment_section:
-            gr.Markdown("## Comments")
-            comment_area = gr.Textbox(
-                label="Leave a comment",
-                placeholder="Type here...",
-                lines=3
-            )
+        # with gr.Group(visible=False) as comment_section:
+        #     gr.Markdown("## Comments")
+        #     comment_area = gr.Textbox(
+        #         label="Leave a comment",
+        #         placeholder="Type here...",
+        #         lines=3
+        #     )
             
-            save_button = gr.Button("Save Comment")
+        #     save_button = gr.Button("Save Comment")
 
         gr.Interface (
             fn=detect_plague, 
@@ -63,17 +68,33 @@ with gr.Blocks(theme=gr.themes.Soft()) as base_front:
                 label="Upload Image", 
                 type="pil"
             ), 
-            outputs=[gr.Textbox(
+            outputs=gr.Textbox(
                 label="Result",
                 scale=2
-                ),comment_section]
+                )
         )
+
+        gr.Textbox(
+            label="Result",
+            scale=2
+        )
+
+        save_btn = gr.Button(
+            "Save Comment"
+        )
+
+
+        save_btn.click(
+            alerts_test 
+        )
+
+
     with gr.Tab("TimeLine"):
-        pass
+        print("TimeLine")
     with gr.Tab("Map"):
-        pass
+        print("Map")
     with gr.Tab("About"):  
-        pass
+        print("About")
 
 
 base_front.launch(
