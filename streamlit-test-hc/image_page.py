@@ -40,28 +40,15 @@ def image_page():
     names_dict = result[0].names
     probs = result[0].probs.data.tolist()
 
-
-    # print(names_dict)
-    # print(probs)
-
     names_and_score = list(zip(names_dict.values(), probs))
 
-    sorted_names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
-    
-
-    for name, score in sorted_names_and_score:
-        # print(f"{name}: {score:.6f}")
-        pass
-
-    # Five top classes above 0.10 score
     names_and_score = [(name, score) for name, score in names_and_score if score > 0.10][:5]
 
-    #sort by score
     names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
 
-    # Transform score to percentage 
-
     names_and_score = [(name, f"{score*100:.2f}%") for name, score in names_and_score]
+
+    
     print(names_and_score)
 
     df = pd.DataFrame(names_and_score, columns=["Plague", "Score"])
@@ -79,37 +66,30 @@ def image_page():
     st.write("Probabilidades:")
     st.write(df)
 
-
     if 'plague_title' not in st.session_state:
         st.session_state['plague_title'] = plague_detected
     if 'publish_clicked' not in st.session_state:
         st.session_state['publish_clicked'] = False
     if 'markers' not in st.session_state:
-            st.session_state['markers'] = []
+        st.session_state['markers'] = []
     if 'map_center' not in st.session_state:
-        st.session_state['map_center'] = [-23.5505, -46.6333]  
-
+        st.session_state['map_center'] = [-15.87680, -47.856445]
 
     if st.button("Publish data?"):
         st.session_state['publish_clicked'] = True
+
+    if st.session_state['publish_clicked']:
         title = st.text_input("Plague Name", value=st.session_state['plague_title'], key="plague_title_input")
         st.session_state['plague_title'] = title
 
-
-    if st.session_state['publish_clicked']:
         st.subheader("Marque os pontos no mapa")
-        
-
         m = folium.Map(location=st.session_state['map_center'], zoom_start=12)
         m.add_child(folium.LatLngPopup())
-
 
         for lat, lng in st.session_state['markers']:
             folium.Marker([lat, lng], popup=f"Lat: {lat}, Long: {lng}").add_to(m)
 
-
         map_data = sf.st_folium(m, width=1000, height=500)
-
 
         if map_data.get("last_clicked"):
             lat = map_data["last_clicked"]["lat"]
@@ -126,27 +106,6 @@ def image_page():
             print(f"Praga: {title}")
             print(f"Pontos: {markers}")
             st.write("Dados salvos com sucesso!")
-            st.session_state['publish_clicked'] = False  # Reseta para esconder mapa e botão
+            st.session_state['publish_clicked'] = False
             st.session_state['markers'] = []
-
-
-def map_file_to_save():
-    if "markers" not in st.session_state:
-        st.session_state.markers = []
-
-    m = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
-    m.add_child(folium.LatLngPopup())
-
-    for lat, lng in st.session_state.markers:
-        folium.Marker([lat, lng], popup=f"Lat: {lat}, Long: {lng}").add_to(m)
-
-    map_data = sf.st_folium(m, width=1000, height=500)
-
-    if map_data.get("last_clicked"):
-        lat = map_data["last_clicked"]["lat"]
-        lng = map_data["last_clicked"]["lng"]
-        if [lat, lng] not in st.session_state.markers:
-            st.session_state.markers.append([lat, lng])
-            st.write(f"Coordenadas capturadas: Latitude {lat}, Longitude {lng}")
-
-        print(st.session_state.markers)
+            st.success('This is a success message!', icon="✅")
