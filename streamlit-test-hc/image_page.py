@@ -7,6 +7,8 @@ from ultralytics import YOLO
 import pandas as pd
 import streamlit_folium as sf
 import folium
+from datetime import datetime
+from databases.controllers import put_plague_register
 
 model = YOLO('bacteria-yolo11n-cls.pt')
 
@@ -41,13 +43,9 @@ def image_page():
     probs = result[0].probs.data.tolist()
 
     names_and_score = list(zip(names_dict.values(), probs))
-
     names_and_score = [(name, score) for name, score in names_and_score if score > 0.10][:5]
-
     names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
-
     names_and_score = [(name, f"{score*100:.2f}%") for name, score in names_and_score]
-
     
     print(names_and_score)
 
@@ -68,10 +66,13 @@ def image_page():
 
     if 'plague_title' not in st.session_state:
         st.session_state['plague_title'] = plague_detected
+
     if 'publish_clicked' not in st.session_state:
         st.session_state['publish_clicked'] = False
+
     if 'markers' not in st.session_state:
         st.session_state['markers'] = []
+
     if 'map_center' not in st.session_state:
         st.session_state['map_center'] = [-15.87680, -47.856445]
 
@@ -83,7 +84,7 @@ def image_page():
         st.session_state['plague_title'] = title
 
         st.subheader("Marque os pontos no mapa")
-        m = folium.Map(location=st.session_state['map_center'], zoom_start=12)
+        m = folium.Map(location=st.session_state['map_center'], zoom_start=4)
         m.add_child(folium.LatLngPopup())
 
         for lat, lng in st.session_state['markers']:
@@ -99,13 +100,38 @@ def image_page():
                 st.write(f"Coordenadas capturadas: Latitude {lat}, Longitude {lng}")
             st.session_state['map_center'] = [lat, lng]
 
-        # Botão "Save data"
+        date = st.date_input("When did you see this plague?", key="date_input")
+
         if st.button("Save data"):
+            if not date:
+                st.error("Please select a date.")
+                return
+            if not title:
+                st.error("Please enter a title.")
+                return
+            if not st.session_state['markers']:
+                st.error("Please select at least one marker.")
+                return
+
             title = st.session_state['plague_title']
             markers = st.session_state['markers']
+            
             print(f"Praga: {title}")
             print(f"Pontos: {markers}")
-            st.write("Dados salvos com sucesso!")
+            print(f"Data: {date}")
+
             st.session_state['publish_clicked'] = False
             st.session_state['markers'] = []
-            st.success('This is a success message!', icon="✅")
+
+            date_string = datetime.strptime(str(date), "%Y-%m-%d").timestamp()
+
+            data = [(title, date_string, str(markers))]
+            
+            try:
+                put_plague_register(data, 'databases/registers_control.sqlite')
+                st.success('This is a success message!', icon="✅")
+
+                del st.session_state['plague_title']
+            except Exception as e:
+                st.error(f"Erro ao salvar os dados: {e}")
+                return

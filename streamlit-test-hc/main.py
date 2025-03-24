@@ -22,12 +22,11 @@ def page_map():
     st.write(df)
 
 def main():
-    st.sidebar.header('Hub Life 🧬')
+    st.sidebar.header('Hub Life 🧬', anchor=False)
 
     if 'page' not in st.session_state:
         st.session_state.page = 'Home'
 
-    # Botões para mudar a página
     if st.sidebar.button("Home", icon="🏠"):
         st.session_state.page = 'Home'
     if st.sidebar.button("Plague Detected", icon="🦠"):
@@ -37,7 +36,6 @@ def main():
     if st.sidebar.button("MapLife", icon="🗺️"):
         st.session_state.page = 'Page 2'
 
-    # Renderiza a página selecionada
     if st.session_state.page == 'Home':
         landing_page()
     if st.session_state.page == 'Image Page':
