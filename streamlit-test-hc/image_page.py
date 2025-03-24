@@ -70,7 +70,6 @@ def image_page():
 
     st.header("Analysis 🔍")
 
-    # Exibe as abas
     tab1, tab2 = st.tabs(["Original", "Detected Edges"])
     tab1.image(image, caption="Original", use_container_width=True)
     tab2.image(edges, caption="Detected Edges", use_container_width=True)
@@ -80,31 +79,37 @@ def image_page():
     st.write("Probabilidades:")
     st.write(df)
 
-    # Inicializa variáveis no session_state
+
     if 'plague_title' not in st.session_state:
         st.session_state['plague_title'] = plague_detected
     if 'publish_clicked' not in st.session_state:
         st.session_state['publish_clicked'] = False
     if 'markers' not in st.session_state:
-        st.session_state['map_center'] = [-23.5505, -46.6333]
+            st.session_state['markers'] = []
+    if 'map_center' not in st.session_state:
+        st.session_state['map_center'] = [-23.5505, -46.6333]  
 
-    # Botão "Publish data?"
+
     if st.button("Publish data?"):
         st.session_state['publish_clicked'] = True
         title = st.text_input("Plague Name", value=st.session_state['plague_title'], key="plague_title_input")
         st.session_state['plague_title'] = title
 
-    # Após "Publish data?", exibe o mapa e o botão "Save data"
+
     if st.session_state['publish_clicked']:
-        # Mapa
         st.subheader("Marque os pontos no mapa")
+        
+
         m = folium.Map(location=st.session_state['map_center'], zoom_start=12)
         m.add_child(folium.LatLngPopup())
+
 
         for lat, lng in st.session_state['markers']:
             folium.Marker([lat, lng], popup=f"Lat: {lat}, Long: {lng}").add_to(m)
 
+
         map_data = sf.st_folium(m, width=1000, height=500)
+
 
         if map_data.get("last_clicked"):
             lat = map_data["last_clicked"]["lat"]
@@ -112,6 +117,7 @@ def image_page():
             if [lat, lng] not in st.session_state['markers']:
                 st.session_state['markers'].append([lat, lng])
                 st.write(f"Coordenadas capturadas: Latitude {lat}, Longitude {lng}")
+            st.session_state['map_center'] = [lat, lng]
 
         # Botão "Save data"
         if st.button("Save data"):
@@ -121,7 +127,7 @@ def image_page():
             print(f"Pontos: {markers}")
             st.write("Dados salvos com sucesso!")
             st.session_state['publish_clicked'] = False  # Reseta para esconder mapa e botão
-            st.session_state['markers'] = []  # Reseta os marcadores
+            st.session_state['markers'] = []
 
 
 def map_file_to_save():
