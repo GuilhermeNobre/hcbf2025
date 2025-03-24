@@ -1,8 +1,13 @@
 import streamlit as st
 from image_page import image_page
+from dom_file import *
 from map_stream import *
 import pandas as pd
 
+
+def landing_page():
+    st.title('Hub Life 🧬')
+    st.html(title_text_animation())
 
 def page1():
     st.title('Page 1')
@@ -19,19 +24,22 @@ def page_map():
 def main():
     st.sidebar.header('Hub Life 🧬')
 
-    # Inicializa o estado da página
     if 'page' not in st.session_state:
-        st.session_state.page = 'Image Page'
+        st.session_state.page = 'Home'
 
     # Botões para mudar a página
+    if st.sidebar.button("Home", icon="🏠"):
+        st.session_state.page = 'Home'
     if st.sidebar.button("Plague Detected", icon="🦠"):
         st.session_state.page = 'Image Page'
     if st.sidebar.button("TimeLife", icon="🌱"):
-        st.session_state.page = 'Page 1'
+        st.session_state.page = 'Time Life'
     if st.sidebar.button("MapLife", icon="🗺️"):
         st.session_state.page = 'Page 2'
 
     # Renderiza a página selecionada
+    if st.session_state.page == 'Home':
+        landing_page()
     if st.session_state.page == 'Image Page':
         image_page()
     elif st.session_state.page == 'Time Life':
