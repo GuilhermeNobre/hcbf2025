@@ -1,14 +1,18 @@
-import streamlit as st
 import cv2
-import numpy as np
-from PIL import Image
-import requests
-from ultralytics import YOLO
-import pandas as pd
-import streamlit_folium as sf
 import folium
+import numpy as np
+import pandas as pd
+import requests
+import streamlit as st
+import streamlit_folium as sf
+import uuid
+
+
 from datetime import datetime
 from databases.controllers import put_plague_register
+from PIL import Image
+from ultralytics import YOLO
+
 
 model = YOLO('bacteria-yolo11n-cls.pt')
 
@@ -115,19 +119,18 @@ def image_page():
 
             title = st.session_state['plague_title']
             markers = st.session_state['markers']
-            
-            print(f"Praga: {title}")
-            print(f"Pontos: {markers}")
-            print(f"Data: {date}")
 
             st.session_state['publish_clicked'] = False
             st.session_state['markers'] = []
 
             date_string = datetime.strptime(str(date), "%Y-%m-%d").timestamp()
 
-            data = [(title, date_string, str(markers))]
+            uuid_str = str(uuid.uuid4())
+
+            data = [(title, date_string, uuid_str ,str(markers))]
             
             try:
+                image.save(f'database_image/{uuid_str}.jpg')
                 put_plague_register(data, 'databases/registers_control.sqlite')
                 st.success('This is a success message!', icon="✅")
 

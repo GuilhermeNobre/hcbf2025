@@ -2,6 +2,7 @@ import streamlit as st
 from image_page import image_page
 from dom_file import *
 from map_stream import *
+from timelife import *
 import pandas as pd
 
 
@@ -41,7 +42,7 @@ def main():
     if st.session_state.page == 'Image Page':
         image_page()
     elif st.session_state.page == 'Time Life':
-        page1()
+        timelife_page()
     elif st.session_state.page == 'Page 2':
         map_file_to_save()
 
