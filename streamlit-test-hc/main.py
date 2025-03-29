@@ -12,7 +12,7 @@ from microlife import micro_life_page
 
 # Configuração da página
 st.set_page_config(
-    page_title="Hub Life",
+    page_title="Micro Life AI",
     page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded"

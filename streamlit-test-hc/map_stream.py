@@ -122,7 +122,7 @@ def map_single_plague(plague_name):
 
     for i in range(len(bacterias_data)):
         for j in ast.literal_eval(bacterias_data[i][4]):
-            # print(j) 
+            # print(j) /
             locations_info.append(j)
 
     print(locations_info)
@@ -180,6 +180,9 @@ def heatmap_all():
         [255, 51, 51],   
     ]
 
+    print(heatmap_data)
+    print('----------------')
+
     
     # Create the heatmap layer
     layer = pdk.Layer(
@@ -209,6 +212,74 @@ def heatmap_all():
 
     # Display in Streamlit
     st.pydeck_chart(r)
+
+
+def heat_map_single_plague(plague_name):
+    bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
+
+    name_plague = bacterias_data[0][1]
+    #print(name_plague) 
+
+    locations_info = []
+
+    for i in range(len(bacterias_data)):
+        for j in ast.literal_eval(bacterias_data[i][4]):
+            # print(j) 
+            locations_info.append(j)
+
+    locations_list = [] # This is [[37.92686760148135, 35.91430664062501], [36.778492404594154, 34.24987792968751], [37.67077737288316, 36.64489746093751], [-19.93075031142836, -40.23468006514012], [8.320211206699756, -10.283200893401975], [11.695271624635724, -8.525387835502448], [20.0559305042887, -23.2031232136487], [18.729500983002968, 78.92578737080136], [-23.483402337004417, -50.185544337630134], [-19.476951223034515, -58.62304470777499], [-26.667094933426775, -55.19531154513354], [-10.574223069716929, -57.48046665787685], [-14.604848374958255, -58.007810440063345], [-3.776560701596921, -71.71874751090989], [-13.976715490905367, -39.39697221100328], [-0.5273368144096696, -62.22656121253961]]
+    #[[37.92686760148135, 35.91430664062501], [36.778492404594154, 34.24987792968751], [37.67077737288316, 36.64489746093751], [-19.93075031142836, -40.23468006514012], [8.320211206699756, -10.283200893401975], [11.695271624635724, -8.525387835502448], [20.0559305042887, -23.2031232136487], [18.729500983002968, 78.92578737080136], [-23.483402337004417, -50.185544337630134], [-19.476951223034515, -58.62304470777499], [-26.667094933426775, -55.19531154513354], [-10.574223069716929, -57.48046665787685], [-14.604848374958255, -58.007810440063345], [-3.776560701596921, -71.71874751090989], [-13.976715490905367, -39.39697221100328], [-0.5273368144096696, -62.22656121253961]]
+
+    for i in range(len(locations_info)):
+        locations_list.append([locations_info[i][0], locations_info[i][1]]) 
+
+    final_list = []
+    for i in range(len(locations_list)):
+        final_list.append({"lat": locations_list[i][0], "lon": locations_list[i][1]})
+
+    print(final_list)
+
+
+
+    COLOR_BREWER_MODIFIED_SCALE = [
+        [204, 255, 204],  
+        [230, 255, 204], 
+        [255, 255, 153],  
+        [255, 230, 102],  
+        [255, 153, 102],  
+        [255, 51, 51],   
+    ]
+
+    # Create the heatmap layer
+    layer = pdk.Layer(
+        "HeatmapLayer",
+        data=final_list,
+        get_position=["lon", "lat"],
+        radius_pixels=45,
+        opacity=1,
+        aggregation="MEAN",
+        color_range=COLOR_BREWER_MODIFIED_SCALE,
+    )
+
+    # Set the initial view state
+    view_state = pdk.ViewState(
+        latitude=42.5531,
+        longitude=48.1641,
+        zoom=2,
+        pitch=0
+    )
+
+    # Create the deck.gl visualization
+    r = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        map_style="mapbox://styles/mapbox/light-v9"  # Optional: requires Mapbox token
+    )
+
+    # Display in Streamlit
+    st.pydeck_chart(r)
+
+
 
 
 # def map_all_infos():
@@ -271,7 +342,13 @@ def map_page_main():
             heatmap_all()
 
     else:
-        map_single_plague(option)
+
+        tab1, tab2 = st.tabs(["Mapa de Marcadores", "Mapa de Calor"])
+
+        with tab1:
+            map_single_plague(option)
+        with tab2:
+            heat_map_single_plague(option)
 
 
 

@@ -133,9 +133,10 @@ def micro_life_page():
                     # Limpar estados
                     st.session_state['publish_clicked'] = False
                     st.session_state['markers'] = []
+                    st.success("Dados salvos com sucesso! ✅")
+                    
                     del st.session_state['plague_title']
                         
-                    st.success("Dados salvos com sucesso! ✅")
                 except Exception as e:
                     print(e)
                     st.error(f"Erro ao salvar os dados: {e}")
@@ -206,8 +207,6 @@ def micro_life_page():
                 st.write(f"**Medicamentos:** {dados[6]}")
                 st.write(f"**Dicas:** {dados[7]}")
                 st.write(f"**Prevenção:** {dados[8]}")
-            
-            st.markdown("---")
-            
+
             if st.session_state['publish_clicked']:
                 st.markdown("---")
