@@ -25,6 +25,14 @@ def wiki_page_file():
 
     st.subheader("Patogenes: ", anchor=False)
     st.title(get_info_plague[0][1], anchor=False)
+    fake_col1, fake_col2, fake_col3 = st.columns(3)
+    
+    with fake_col1:
+        pass
+    with fake_col2:
+        st.image(get_info_plague[0][9], use_container_width=True, caption=get_info_plague[0][1], width=10)
+    with fake_col3:
+        pass    
     st.markdown('------')
 
 

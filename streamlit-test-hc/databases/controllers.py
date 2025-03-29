@@ -22,6 +22,16 @@ def get_plague_register(path, limite=False):
     cursor.close()
     return data
 
+def get_plague_register_by_plague(path, plague):
+    with sqlite3.connect(path) as conn:
+        cursor = conn.cursor()
+        cursor.execute(f'SELECT * FROM registers WHERE registers = "{plague}"')
+
+        data = cursor.fetchall()
+    
+    cursor.close()
+    return data
+
 def get_plague_database(path):
     with sqlite3.connect(path) as conn:
         cursor = conn.cursor()
@@ -41,3 +51,13 @@ def get_single_plague_database(path, plague):
     
     cursor.close()
     return data 
+
+def get_plague_names(path):
+    with sqlite3.connect(path) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT name FROM plague')
+
+        data = cursor.fetchall()
+    
+    cursor.close()
+    return data

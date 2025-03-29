@@ -119,7 +119,7 @@ def main():
     elif st.session_state.page == 'Time Life':
         timelife_page()
     elif st.session_state.page == 'Page 2':
-        map_file_to_save()
+        map_page_main()
     elif st.session_state.page == 'Procurar':
         wiki_page_file()
 

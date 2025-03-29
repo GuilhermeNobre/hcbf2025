@@ -2,8 +2,9 @@ import streamlit as st
 import streamlit_folium as sf
 import folium
 import sqlite3
-from datetime import datetime
 import json
+from datetime import datetime
+import databases.controllers as db
 
 def get_bacteria_data():
     conn = sqlite3.connect('databases/registers_control.sqlite')
@@ -62,7 +63,7 @@ def get_bacteria_data():
     
     return {"bacterias": bacterias}
 
-def map_file_to_save():
+def map_all_infos():
     st.markdown("""
         <h1>MapLife 🗺️</h1>
         <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
@@ -101,3 +102,67 @@ def map_file_to_save():
     
     # st.markdown("### Dados das Bactérias")
     # st.json(bacterias_data)
+
+
+
+def map_single_plague(plague_name):
+    st.markdown("""
+        <h1>MapLife 🗺️</h1>
+        <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
+    """, unsafe_allow_html=True)
+    
+    m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
+    
+    bacterias_data = db.get_plague_register_by_plague('databases/plague.db', plague_name)
+    print('Data')
+    print(bacterias_data)
+    pass
+
+    # for bacteria in bacterias_data:
+    #     # Escolher ícone baseado no tipo
+    #     icon = '🦠' if bacteria["tipo"] == "Gram-negativa" else '🧫'
+
+    #     popupt_text = f"""
+    #         <b>{bacteria['plague']}</b><br>
+    #         Tipo: {bacteria['tipo']}<br>
+    #         Localização: {bacteria['location']}<br>
+    #         Data: {bacteria['timestamp']}<br>
+    #         Coordenadas: {bacteria['location']}
+    #     """
+
+
+
+def map_page_main(): 
+    data_from_db = db.get_plague_database('databases/plague.db')
+
+    tuple_name = ()
+    for i in range(len(data_from_db)):
+        tuple_name += (data_from_db[i][1],)
+
+    #print(tuple_name)
+
+    temp_list = list(tuple_name)
+
+    temp_list.insert(0, "Todas")
+
+    tuple_name = tuple(temp_list)
+
+    #print(tuple_name) 
+
+
+    st.title('Map Plague', anchor=False)
+
+    option = st.selectbox(
+        "Qual bacteria deseja pesquisar?",
+        tuple_name
+    )
+
+    if option == "Todas":
+        map_all_infos()
+
+    else:
+        map_single_plague(option)
+
+
+
+
