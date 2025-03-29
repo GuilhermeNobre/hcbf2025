@@ -8,6 +8,7 @@ from map_stream import *
 from timelife import *
 from landingpage import *
 from wikipage import *
+from microlife import micro_life_page
 
 # Configuração da página
 st.set_page_config(
@@ -101,6 +102,8 @@ def main():
         st.session_state.page = 'Page 2'
     if st.sidebar.button("🔍 Pesquisar", use_container_width=True):
         st.session_state.page = 'Procurar'
+    if st.sidebar.button("🔬 Micro Life IA", use_container_width=True):
+        st.session_state.page = 'Microscope'
 
     # Adiciona informações na barra lateral
     st.sidebar.markdown("---")
@@ -122,6 +125,8 @@ def main():
         map_page_main()
     elif st.session_state.page == 'Procurar':
         wiki_page_file()
+    elif st.session_state.page == 'Microscope':
+        micro_life_page()
 
 if __name__ == '__main__':
     main()
