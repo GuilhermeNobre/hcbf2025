@@ -19,9 +19,12 @@ def image_to_base64(img):
         
 
 def timelife_page():
-    st.write("Timelife all plagues detected")
-
-    num_rows = st.slider("Number of rows", 1, 100, 10)
+    st.markdown("""
+        <h1>Timelife 📊</h1>
+        <p>Histórico completo de todas as pesquisas e detecções realizadas na plataforma.</p>
+    """, unsafe_allow_html=True)
+    
+    num_rows = st.slider("", 1, 100, 10)
 
     data_files = get_plague_register('databases/registers_control.sqlite', num_rows)
 
