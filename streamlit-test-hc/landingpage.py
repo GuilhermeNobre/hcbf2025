@@ -40,70 +40,51 @@ def landing_page_functions():
     with col1:
         st.markdown("""
         <div class="feature-card">
-            <h3 style='color: var(--primary-color);'>🔍 Detecção Inteligente</h3>
-            <p>Análise automática de bactérias usando IA avançada.</p>
+            <div style='margin-bottom: 30px;'>
+                <h3>🔍 Detecção Inteligente</h3>
+                <p>Análise automática de bactérias usando IA avançada.</p>
+            </div>
+            <div>
+                <ul style='list-style-type: none; padding-left: 0;'>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>📤 Faça upload de imagens microscópicas</li>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>🔍 Receba análise automática das bactérias</li>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>📊 Visualize as probabilidades de detecção</li>
+                </ul>
+            </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
         <div class="feature-card">
-            <h3 style='color: var(--primary-color);'>📊 Análise Temporal</h3>
-            <p>Visualização da evolução das bactérias ao longo do tempo.</p>
+            <div style='margin-bottom: 30px;'>
+                <h3>📊 Análise Temporal</h3>
+                <p>Visualização da evolução das bactérias ao longo do tempo.</p>
+            </div>
+            <div>
+                <ul style='list-style-type: none; padding-left: 0;'>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>📈 Acompanhe a evolução das bactérias</li>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>📊 Visualize tendências e padrões</li>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>🎯 Tome decisões baseadas em dados</li>
+                </ul>
+            </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
         st.markdown("""
         <div class="feature-card">
-            <h3 style='color: var(--primary-color);'>🗺️ Mapeamento</h3>
-            <p>Geolocalização e mapeamento das áreas afetadas.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Seção de como usar
-    st.markdown("""
-        <div style='margin-top: 30px;'>
-            <h3>Como Usar</h3>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Cards de como usar
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class="feature-card">
-            <h3 style='color: var(--primary-color);'>🦠 Detecção de Bactérias</h3>
-            <ul style='list-style-type: none; padding-left: 0;'>
-                <li style='margin-bottom: 10px;'>📤 Faça upload de imagens microscópicas</li>
-                <li style='margin-bottom: 10px;'>🔍 Receba análise automática das bactérias</li>
-                <li style='margin-bottom: 10px;'>📊 Visualize as probabilidades de detecção</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="feature-card">
-            <h3 style='color: var(--primary-color);'>⏳ Análise Temporal</h3>
-            <ul style='list-style-type: none; padding-left: 0;'>
-                <li style='margin-bottom: 10px;'>📈 Acompanhe a evolução das bactérias</li>
-                <li style='margin-bottom: 10px;'>📊 Visualize tendências e padrões</li>
-                <li style='margin-bottom: 10px;'>🎯 Tome decisões baseadas em dados</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class="feature-card">
-            <h3 style='color: var(--primary-color);'>🗺️ Mapeamento</h3>
-            <ul style='list-style-type: none; padding-left: 0;'>
-                <li style='margin-bottom: 10px;'>📍 Marque as localizações no mapa</li>
-                <li style='margin-bottom: 10px;'>🌍 Visualize a distribuição geográfica</li>
-                <li style='margin-bottom: 10px;'>⚠️ Identifique áreas críticas</li>
-            </ul>
+            <div style='margin-bottom: 30px;'>
+                <h3>🗺️ Mapeamento</h3>
+                <p>Geolocalização e mapeamento das áreas afetadas.</p>
+            </div>
+            <div>
+                <ul style='list-style-type: none; padding-left: 0; '>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>📍 Marque as localizações no mapa</li>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>🌍 Visualize a distribuição geográfica</li>
+                    <li style='margin-bottom: 10px; margin-left: 0px;'>⚠️ Identifique áreas críticas</li>
+                </ul>
+            </div>
         </div>
         """, unsafe_allow_html=True)
     
