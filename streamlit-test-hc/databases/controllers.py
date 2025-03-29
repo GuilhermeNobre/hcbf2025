@@ -25,7 +25,7 @@ def get_plague_register(path, limite=False):
 def get_plague_register_by_plague(path, plague):
     with sqlite3.connect(path) as conn:
         cursor = conn.cursor()
-        cursor.execute(f'SELECT * FROM registers WHERE registers = "{plague}"')
+        cursor.execute(f'SELECT * FROM registers WHERE plague = "{plague}"')
 
         data = cursor.fetchall()
     
