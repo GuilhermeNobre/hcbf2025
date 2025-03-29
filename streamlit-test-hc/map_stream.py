@@ -41,22 +41,24 @@ def get_bacteria_data():
         try:
             coords = json.loads(location)
             # Usar a primeira coordenada do array como localização principal
-            lat, lon = coords[0]
+            for coord in coords:
+                lat, lon = coord
+                bacterias.append({
+                    "nome": plague,
+                    "tipo": tipo,
+                    "localizacao": localizacao,
+                    "prevalencia": prevalencia,
+                    "resistencia": resistencia,
+                    "data_deteccao": date_str,
+                    "uuid": str(id),
+                    "latitude": lat,
+                    "longitude": lon
+                })
         except (json.JSONDecodeError, IndexError):
             # Se houver erro ao processar as coordenadas, usar valores padrão
             lat, lon = 0, 0
         
-        bacterias.append({
-            "nome": plague,
-            "tipo": tipo,
-            "localizacao": localizacao,
-            "prevalencia": prevalencia,
-            "resistencia": resistencia,
-            "data_deteccao": date_str,
-            "uuid": str(id),
-            "latitude": lat,
-            "longitude": lon
-        })
+        
     
     return {"bacterias": bacterias}
 
