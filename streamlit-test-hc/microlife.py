@@ -10,6 +10,7 @@ import uuid
 from databases.controllers import put_plague_register
 import folium
 import streamlit_folium as sf
+from databases.controllers import get_single_plague_database
 
 # Carregar o modelo YOLO
 model = YOLO('bacteria-yolo11n-cls.pt')
@@ -190,6 +191,23 @@ def micro_life_page():
             st.title("Bactéria detectada: " + plague_detected)
             st.write("Probabilidades:")
             st.write(df)
+
+            st.markdown("---")
+
+            st.title("Informações sobre a bacteria: ")
+            dados = get_single_plague_database("./databases/plague.db", plague_detected)
+            
+            for dados in dados:
+                st.write(f"**Nome:** {dados[1]}")
+                st.write(f"**Característica:** {dados[2]}")
+                st.write(f"**Local Manifestado:** {dados[3]}")
+                st.write(f"**Doenças que são causadas:** {dados[4]}")
+                st.write(f"**Sintomas:** {dados[5]}")
+                st.write(f"**Medicamentos:** {dados[6]}")
+                st.write(f"**Dicas:** {dados[7]}")
+                st.write(f"**Prevenção:** {dados[8]}")
+            
+            st.markdown("---")
             
             if st.session_state['publish_clicked']:
                 st.markdown("---")
