@@ -125,7 +125,8 @@ def micro_life_page():
                     date_string = datetime.strptime(str(date), "%Y-%m-%d").timestamp()
                         
                     # Salvar os dados no banco
-                    data = [(title, date_string, uuid_str, st.session_state['markers'])]
+                    data = [(title, date_string, uuid_str, str(st.session_state['markers']))]
+                    print(data)
                     put_plague_register(data, 'databases/registers_control.sqlite')
                         
                     # Limpar estados
@@ -135,6 +136,7 @@ def micro_life_page():
                         
                     st.success("Dados salvos com sucesso! ✅")
                 except Exception as e:
+                    print(e)
                     st.error(f"Erro ao salvar os dados: {e}")
 
     with col2:
@@ -191,6 +193,3 @@ def micro_life_page():
             
             if st.session_state['publish_clicked']:
                 st.markdown("---")
-
-if __name__ == "__main__":
-    microscope_page() 

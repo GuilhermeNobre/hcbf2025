@@ -13,7 +13,7 @@ def wiki_page_file():
         list_tuple_name += (data_from_db[i][1],)
 
 
-    st.title('Wikipedia Plague', anchor=False)
+    st.title('Wiki Life', anchor=False)
 
     option = st.selectbox(
         "Qual bacteria deseja pesquisar?",
