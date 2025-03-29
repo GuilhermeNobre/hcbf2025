@@ -3,22 +3,15 @@ import streamlit_folium as sf
 import folium
 import sqlite3
 from datetime import datetime
-import hashlib
-
-def get_fixed_coordinates(uuid):
-    # Usar o UUID para gerar coordenadas fixas
-    hash_value = int(hashlib.md5(uuid.encode()).hexdigest(), 16)
-    lat = (hash_value % 180) - 90  # Latitude entre -90 e 90
-    lon = (hash_value // 180) % 360 - 180  # Longitude entre -180 e 180
-    return lat, lon
+import json
 
 def get_bacteria_data():
     conn = sqlite3.connect('databases/registers_control.sqlite')
     cursor = conn.cursor()
     
-    # Buscar dados das bactérias da mesma tabela usada no timeline
+    # Buscar dados das bactérias incluindo a localização
     cursor.execute("""
-        SELECT Plague, Timestamp, id 
+        SELECT Plague, Timestamp, id, location 
         FROM registers 
         ORDER BY Timestamp DESC
     """)
@@ -28,7 +21,7 @@ def get_bacteria_data():
     
     # Processar os dados
     bacterias = []
-    for plague, timestamp, id in results:
+    for plague, timestamp, id, location in results:
         # Converter timestamp para data legível
         date_str = datetime.fromtimestamp(float(timestamp)).strftime('%Y-%m-%d')
         
@@ -36,7 +29,7 @@ def get_bacteria_data():
         tipo = "Gram-negativa" if any(b in plague.lower() for b in ['e. coli', 'klebsiella', 'pseudomonas']) else "Gram-positiva"
         localizacao = "Intestino" if any(b in plague.lower() for b in ['e. coli', 'enterococcus']) else "Trato Respiratório"
         
-        # Determinar prevalência baseado na data (exemplo)
+        # Determinar prevalência baseado na data
         data_obj = datetime.strptime(date_str, '%Y-%m-%d')
         dias_antigos = (datetime.now() - data_obj).days
         prevalencia = "Alta" if dias_antigos < 30 else "Média" if dias_antigos < 90 else "Baixa"
@@ -44,8 +37,14 @@ def get_bacteria_data():
         # Determinar resistência baseado no tipo
         resistencia = "Múltipla" if tipo == "Gram-negativa" else "MRSA" if "staphylococcus" in plague.lower() else "Vancomicina"
         
-        # Gerar coordenadas fixas baseadas no UUID
-        lat, lon = get_fixed_coordinates(str(id))
+        # Processar as coordenadas
+        try:
+            coords = json.loads(location)
+            # Usar a primeira coordenada do array como localização principal
+            lat, lon = coords[0]
+        except (json.JSONDecodeError, IndexError):
+            # Se houver erro ao processar as coordenadas, usar valores padrão
+            lat, lon = 0, 0
         
         bacterias.append({
             "nome": plague,
@@ -84,7 +83,8 @@ def map_file_to_save():
             Localização: {bacteria['localizacao']}<br>
             Prevalência: {bacteria['prevalencia']}<br>
             Resistência: {bacteria['resistencia']}<br>
-            Data: {bacteria['data_deteccao']}
+            Data: {bacteria['data_deteccao']}<br>
+            Coordenadas: {bacteria['latitude']}, {bacteria['longitude']}
         """
         
         # Adicionar o marcador com coordenadas fixas
