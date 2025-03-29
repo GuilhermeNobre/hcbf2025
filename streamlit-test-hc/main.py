@@ -7,6 +7,7 @@ from dom_file import *
 from map_stream import *
 from timelife import *
 from landingpage import *
+from wikipage import *
 
 # Configuração da página
 st.set_page_config(
@@ -98,6 +99,8 @@ def main():
         st.session_state.page = 'Time Life'
     if st.sidebar.button("🗺️ Mapeamento", use_container_width=True):
         st.session_state.page = 'Page 2'
+    if st.sidebar.button("🔍 Pesquisar", use_container_width=True):
+        st.session_state.page = 'Procurar'
 
     # Adiciona informações na barra lateral
     st.sidebar.markdown("---")
@@ -117,6 +120,8 @@ def main():
         timelife_page()
     elif st.session_state.page == 'Page 2':
         map_file_to_save()
+    elif st.session_state.page == 'Procurar':
+        wiki_page_file()
 
 if __name__ == '__main__':
     main()
