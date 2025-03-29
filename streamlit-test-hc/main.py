@@ -94,7 +94,7 @@ def main():
 
     if st.sidebar.button("🏠 Home", use_container_width=True):
         st.session_state.page = 'Home'
-    if st.sidebar.button("🔬 Micro Life IA", use_container_width=True):
+    if st.sidebar.button("🔬 Micro Life AI", use_container_width=True):
         st.session_state.page = 'Microscope'
     # if st.sidebar.button("🦠 Detecção de Bactérias", use_container_width=True):
     #     st.session_state.page = 'Image Page'
