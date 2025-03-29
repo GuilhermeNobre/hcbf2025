@@ -10,13 +10,14 @@ import uuid
 from databases.controllers import put_plague_register
 import folium
 import streamlit_folium as sf
+from databases.controllers import get_single_plague_database
 
 # Carregar o modelo YOLO
 model = YOLO('bacteria-yolo11n-cls.pt')
 
 def micro_life_page():
     st.markdown("""
-        <h1>Micro Life IA 🔬</h1>
+        <h1>Micro Life AI 🔬</h1>
         <p>Visualização microscópica das bactérias e análise detalhada das amostras.</p>
     """, unsafe_allow_html=True)
 
@@ -125,7 +126,8 @@ def micro_life_page():
                     date_string = datetime.strptime(str(date), "%Y-%m-%d").timestamp()
                         
                     # Salvar os dados no banco
-                    data = [(title, date_string, uuid_str, st.session_state['markers'])]
+                    data = [(title, date_string, uuid_str, str(st.session_state['markers']))]
+                    print(data)
                     put_plague_register(data, 'databases/registers_control.sqlite')
                         
                     # Limpar estados
@@ -135,6 +137,7 @@ def micro_life_page():
                         
                     st.success("Dados salvos com sucesso! ✅")
                 except Exception as e:
+                    print(e)
                     st.error(f"Erro ao salvar os dados: {e}")
 
     with col2:
@@ -188,9 +191,23 @@ def micro_life_page():
             st.title("Bactéria detectada: " + plague_detected)
             st.write("Probabilidades:")
             st.write(df)
+
+            st.markdown("---")
+
+            st.title("Informações sobre a bacteria: ")
+            dados = get_single_plague_database("./databases/plague.db", plague_detected)
+            
+            for dados in dados:
+                st.write(f"**Nome:** {dados[1]}")
+                st.write(f"**Característica:** {dados[2]}")
+                st.write(f"**Local Manifestado:** {dados[3]}")
+                st.write(f"**Doenças que são causadas:** {dados[4]}")
+                st.write(f"**Sintomas:** {dados[5]}")
+                st.write(f"**Medicamentos:** {dados[6]}")
+                st.write(f"**Dicas:** {dados[7]}")
+                st.write(f"**Prevenção:** {dados[8]}")
+            
+            st.markdown("---")
             
             if st.session_state['publish_clicked']:
                 st.markdown("---")
-
-if __name__ == "__main__":
-    microscope_page() 

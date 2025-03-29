@@ -94,16 +94,16 @@ def main():
 
     if st.sidebar.button("🏠 Home", use_container_width=True):
         st.session_state.page = 'Home'
-    if st.sidebar.button("🦠 Detecção de Bactérias", use_container_width=True):
-        st.session_state.page = 'Image Page'
+    if st.sidebar.button("🔬 Micro Life AI", use_container_width=True):
+        st.session_state.page = 'Microscope'
+    # if st.sidebar.button("🦠 Detecção de Bactérias", use_container_width=True):
+    #     st.session_state.page = 'Image Page'
     if st.sidebar.button("🗓️ Análise Temporal", use_container_width=True):
         st.session_state.page = 'Time Life'
     if st.sidebar.button("🗺️ Mapeamento", use_container_width=True):
         st.session_state.page = 'Page 2'
     if st.sidebar.button("🔍 Pesquisar", use_container_width=True):
         st.session_state.page = 'Procurar'
-    if st.sidebar.button("🔬 Micro Life IA", use_container_width=True):
-        st.session_state.page = 'Microscope'
 
     # Adiciona informações na barra lateral
     st.sidebar.markdown("---")

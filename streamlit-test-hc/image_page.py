@@ -128,6 +128,7 @@ def image_page():
             uuid_str = str(uuid.uuid4())
 
             data = [(title, date_string, uuid_str ,str(markers))]
+            print(data)
             
             try:
                 image.save(f'database_image/{uuid_str}.jpg')

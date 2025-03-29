@@ -3,8 +3,12 @@ import streamlit_folium as sf
 import folium
 import sqlite3
 import json
-from datetime import datetime
 import databases.controllers as db
+import ast
+import pandas as pd
+import pydeck as pdk
+from datetime import datetime
+from folium.plugins import HeatMap
 
 def get_bacteria_data():
     conn = sqlite3.connect('databases/registers_control.sqlite')
@@ -64,12 +68,12 @@ def get_bacteria_data():
     return {"bacterias": bacterias}
 
 def map_all_infos():
-    st.markdown("""
-        <h1>MapLife 🗺️</h1>
-        <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
-    """, unsafe_allow_html=True)
+    # st.markdown("""
+    #     <h1>MapLife 🗺️</h1>
+    #     <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
+    # """, unsafe_allow_html=True)
     
-    m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
+    m = folium.Map(location=[42.5531, 48.1641], zoom_start=3, disable_3d=True)
     
     # Buscar dados das bactérias
     bacterias_data = get_bacteria_data()
@@ -84,8 +88,6 @@ def map_all_infos():
             <b>{bacteria['nome']}</b><br>
             Tipo: {bacteria['tipo']}<br>
             Localização: {bacteria['localizacao']}<br>
-            Prevalência: {bacteria['prevalencia']}<br>
-            Resistência: {bacteria['resistencia']}<br>
             Data: {bacteria['data_deteccao']}<br>
             Coordenadas: {bacteria['latitude']}, {bacteria['longitude']}
         """
@@ -98,7 +100,7 @@ def map_all_infos():
         ).add_to(m)
     
     m.add_child(folium.LatLngPopup())
-    sf.st_folium(m, width='100%', height=700)
+    sf.st_folium(m, width='100%', height=1000)
     
     # st.markdown("### Dados das Bactérias")
     # st.json(bacterias_data)
@@ -106,31 +108,131 @@ def map_all_infos():
 
 
 def map_single_plague(plague_name):
-    st.markdown("""
-        <h1>MapLife 🗺️</h1>
-        <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
-    """, unsafe_allow_html=True)
-    
+
     m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
     
     bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
-    print('Data')
-    print(bacterias_data)
-    pass
+    #print('Data')
+    #print(bacterias_data)
 
-    # for bacteria in bacterias_data:
-    #     # Escolher ícone baseado no tipo
-    #     icon = '🦠' if bacteria["tipo"] == "Gram-negativa" else '🧫'
+    name_plague = bacterias_data[0][1]
+    #print(name_plague) 
 
-    #     popupt_text = f"""
-    #         <b>{bacteria['plague']}</b><br>
-    #         Tipo: {bacteria['tipo']}<br>
-    #         Localização: {bacteria['location']}<br>
-    #         Data: {bacteria['timestamp']}<br>
-    #         Coordenadas: {bacteria['location']}
-    #     """
+    locations_info = []
+
+    for i in range(len(bacterias_data)):
+        for j in ast.literal_eval(bacterias_data[i][4]):
+            # print(j) 
+            locations_info.append(j)
+
+    print(locations_info)
+
+    for i in range(len(locations_info)):
+        popup_text = f"""
+            <b>{name_plague}</b><br>
+            Coordenadas: {locations_info[i][0]}, {locations_info[i][1]}
+        """
+
+        folium.Marker(
+            location=[locations_info[i][0], locations_info[i][1]],
+            popup=folium.Popup(popup_text, max_width=300),
+            icon=folium.Icon(color='red', icon='info-sign')
+        ).add_to(m)
+
+    m.add_child(folium.LatLngPopup())
+    sf.st_folium(m, width='100%', height=700)
+
+# def heatmap_all():
+#     m = folium.Map([42.5531, 48.1641], zoom_start=2)
+
+#     bacterias_data = get_bacteria_data() 
+
+#     heatmap_data = [
+#         [bacteria["latitude"], bacteria["longitude"]]
+#         for bacteria in bacterias_data["bacterias"]
+#     ]
+
+#     # print(heatmap_data)
+#     #print("HeatMap")
+#     heatmap_data = [[40.7128, -74.0060], [34.0522, -118.2437], [51.5074, -0.1278]]
+#     HeatMap(heatmap_data).add_to(m)
+#     #print(HeatMap(heatmap_data).add_to(m))
+#     sf.st_folium(m, width='100%')
+#     # folium_static(m)
 
 
+def heatmap_all():
+    # Get bacteria data (assuming this function exists)
+    bacterias_data = get_bacteria_data()
+
+    # Prepare the data in a format suitable for pydeck
+    heatmap_data = [
+        {"lat": bacteria["latitude"], "lon": bacteria["longitude"]}
+        for bacteria in bacterias_data["bacterias"]
+    ]
+
+    COLOR_BREWER_MODIFIED_SCALE = [
+        [204, 255, 204],  
+        [230, 255, 204], 
+        [255, 255, 153],  
+        [255, 230, 102],  
+        [255, 153, 102],  
+        [255, 51, 51],   
+    ]
+
+    
+    # Create the heatmap layer
+    layer = pdk.Layer(
+        "HeatmapLayer",
+        data=heatmap_data,
+        get_position=["lon", "lat"],
+        radius_pixels=45,
+        opacity=1,
+        aggregation="MEAN",
+        color_range=COLOR_BREWER_MODIFIED_SCALE,
+    )
+
+    # Set the initial view state
+    view_state = pdk.ViewState(
+        latitude=42.5531,
+        longitude=48.1641,
+        zoom=2,
+        pitch=0
+    )
+
+    # Create the deck.gl visualization
+    r = pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        map_style="mapbox://styles/mapbox/light-v9"  # Optional: requires Mapbox token
+    )
+
+    # Display in Streamlit
+    st.pydeck_chart(r)
+
+
+# def map_all_infos():
+#     st.markdown("""
+#         <h1>MapLife 🗺️</h1>
+#         <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
+#     """, unsafe_allow_html=True)
+    
+#     m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
+    
+#     # Buscar dados das bactérias
+#     bacterias_data = get_bacteria_data()
+    
+#     # Preparar dados para o HeatMap
+#     heatmap_data = [
+#         [bacteria["latitude"], bacteria["longitude"]]
+#         for bacteria in bacterias_data["bacterias"]
+#     ]
+    
+#     # Adicionar HeatMap ao mapa
+#     HeatMap(heatmap_data).add_to(m)
+    
+#     m.add_child(folium.LatLngPopup())
+#     sf.st_folium(m, width='100%', height=700)
 
 def map_page_main(): 
     data_from_db = db.get_plague_database('databases/plague.db')
@@ -149,8 +251,11 @@ def map_page_main():
 
     #print(tuple_name) 
 
-
-    st.title('Map Plague', anchor=False)
+    st.markdown("""
+        <h1>MapLife 🗺️</h1>
+        <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
+    """, unsafe_allow_html=True)
+    
 
     option = st.selectbox(
         "Qual bacteria deseja pesquisar?",
@@ -158,7 +263,12 @@ def map_page_main():
     )
 
     if option == "Todas":
-        map_all_infos()
+        tab1, tab2 = st.tabs(["Mapa de Marcadores", "Mapa de Calor"])
+        
+        with tab1:
+            map_all_infos()
+        with tab2:
+            heatmap_all()
 
     else:
         map_single_plague(option)
