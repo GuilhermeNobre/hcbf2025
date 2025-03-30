@@ -161,6 +161,12 @@ def micro_life_page():
             names_and_score = [(name, score) for name, score in names_and_score if score > 0.70][:5]
             names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
             names_and_score = [(name, f"{score*100:.2f}%") for name, score in names_and_score]
+
+            print(names_and_score)
+
+            if names_and_score == []:
+                st.error("Nenhuma bactéria da base dados detectada. Por favor, tente novamente.")
+                return 
             
             # Criar DataFrame com os resultados
             df = pd.DataFrame(names_and_score, columns=["Bactéria", "Probabilidade"])
