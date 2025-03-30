@@ -244,7 +244,7 @@ def heat_map_single_plague(plague_name):
     for i in range(len(locations_list)):
         final_list.append({"lat": locations_list[i][0], "lon": locations_list[i][1]})
 
-    print(final_list)
+    #print(final_list)
 
 
 

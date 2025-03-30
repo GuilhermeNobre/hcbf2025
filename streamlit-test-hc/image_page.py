@@ -51,7 +51,7 @@ def image_page():
     names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
     names_and_score = [(name, f"{score*100:.2f}%") for name, score in names_and_score]
     
-    print(names_and_score)
+    #print(names_and_score)
 
     df = pd.DataFrame(names_and_score, columns=["Plague", "Score"])
 
@@ -128,7 +128,7 @@ def image_page():
             uuid_str = str(uuid.uuid4())
 
             data = [(title, date_string, uuid_str ,str(markers))]
-            print(data)
+            #print(data)
             
             try:
                 image.save(f'database_image/{uuid_str}.jpg')
