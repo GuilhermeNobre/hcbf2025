@@ -47,7 +47,7 @@ def get_chatbot_response(prompt, conversation_history, stream=False):
             - Possíveis efeitos colaterais
             - Resistência bacteriana
 
-            3. Sistema Micro Life:
+            3. Sistema MicroLife:
             - Funcionalidades do sistema de identificação bacteriana
             - Interpretação de resultados de análises
             - Mapeamento de incidências bacterianas

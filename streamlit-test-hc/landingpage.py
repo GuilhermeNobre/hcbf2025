@@ -29,7 +29,7 @@ def landing_page_functions():
     # Seção de introdução
     st.markdown("""
     <div id="welcome-title">
-        <h1>Bem-vindo ao Hub Life! 🧬</h1>
+        <h1>Bem-vindo ao MicroLife AI! 🧬</h1>
         <p>Uma plataforma inteligente para monitoramento e análise de bactérias humanas.</p>
     </div>
     """, unsafe_allow_html=True)

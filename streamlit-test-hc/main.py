@@ -13,7 +13,7 @@ from chatbot import chatbot_page
 
 # Configuração da página
 st.set_page_config(
-    page_title="Micro Life AI",
+    page_title="MicroLife AI",
     page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -95,7 +95,7 @@ def main():
 
     if st.sidebar.button("🏠 Home", use_container_width=True):
         st.session_state.page = 'Home'
-    if st.sidebar.button("🔬 Micro Life AI", use_container_width=True):
+    if st.sidebar.button("🔬 MicroLife AI", use_container_width=True):
         st.session_state.page = 'Microscope'
     # if st.sidebar.button("🦠 Detecção de Bactérias", use_container_width=True):
     #     st.session_state.page = 'Image Page'

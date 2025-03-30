@@ -17,7 +17,7 @@ model = YOLO('bacteria-yolo11n-cls.pt')
 
 def micro_life_page():
     st.markdown("""
-        <h1>Micro Life AI 🔬</h1>
+        <h1>MicroLife AI 🔬</h1>
         <p>Visualização microscópica das bactérias e análise detalhada das amostras.</p>
     """, unsafe_allow_html=True)
 
