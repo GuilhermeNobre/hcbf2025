@@ -9,6 +9,7 @@ import pandas as pd
 import pydeck as pdk
 from datetime import datetime
 from folium.plugins import HeatMap
+from datetime import datetime
 
 def get_bacteria_data():
     conn = sqlite3.connect('databases/registers_control.sqlite')
@@ -86,7 +87,6 @@ def map_all_infos():
         # Criar popup com informações
         popup_text = f"""
             <b>{bacteria['nome']}</b><br>
-            Tipo: {bacteria['tipo']}<br>
             Localização: {bacteria['localizacao']}<br>
             Data: {bacteria['data_deteccao']}<br>
             Coordenadas: {bacteria['latitude']}, {bacteria['longitude']}
@@ -112,7 +112,7 @@ def map_single_plague(plague_name):
     m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
     
     bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
-
+    
     #print(bacterias_data)
     #print('----------------')
     if len(bacterias_data) == 0:
@@ -128,15 +128,26 @@ def map_single_plague(plague_name):
 
     for i in range(len(bacterias_data)):
         for j in ast.literal_eval(bacterias_data[i][4]):
-            # print(j) /
+            #j.append(bacterias_data[i][2].strftime('%d-%m-%Y')) # (register[2]).strftime('%d-%m-%Y')
+            j.append(datetime.fromtimestamp(bacterias_data[i][2]).strftime('%d-%m-%Y'))
+            j.append(bacterias_data[i][5])
             locations_info.append(j)
+        
+    
 
+    #print(locations_info)
     #print(locations_info)
 
     for i in range(len(locations_info)):
+
+        location_a = "{:.3f}".format(locations_info[i][0])
+        location_b = "{:.3f}".format(locations_info[i][1])
+
         popup_text = f"""
             <b>{name_plague}</b><br>
-            Coordenadas: {locations_info[i][0]}, {locations_info[i][1]}
+            Coordenadas: {location_a}, {location_b}<br>
+            Data: {locations_info[i][2]}<br>
+            Observação: {locations_info[i][3]}
         """
 
         folium.Marker(
