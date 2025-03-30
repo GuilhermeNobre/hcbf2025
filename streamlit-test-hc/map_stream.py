@@ -214,8 +214,8 @@ def heatmap_all():
 
     # Set the initial view state
     view_state = pdk.ViewState(
-        latitude=42.5531,
-        longitude=48.1641,
+        latitude=-12.8975,
+        longitude=-50.3613,
         zoom=2,
         pitch=0
     )
@@ -281,8 +281,8 @@ def heat_map_single_plague(plague_name):
 
     # Set the initial view state
     view_state = pdk.ViewState(
-        latitude=42.5531,
-        longitude=48.1641,
+        latitude=-9.8975,
+        longitude=-50.3613,
         zoom=2,
         pitch=0
     )
