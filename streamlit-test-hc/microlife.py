@@ -158,7 +158,7 @@ def micro_life_page():
             probs = result[0].probs.data.tolist()
             
             names_and_score = list(zip(names_dict.values(), probs))
-            names_and_score = [(name, score) for name, score in names_and_score if score > 0.10][:5]
+            names_and_score = [(name, score) for name, score in names_and_score if score > 0.70][:5]
             names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
             names_and_score = [(name, f"{score*100:.2f}%") for name, score in names_and_score]
             

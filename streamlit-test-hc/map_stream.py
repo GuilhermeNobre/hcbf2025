@@ -298,30 +298,6 @@ def heat_map_single_plague(plague_name):
 
 
 
-
-# def map_all_infos():
-#     st.markdown("""
-#         <h1>MapLife 🗺️</h1>
-#         <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
-#     """, unsafe_allow_html=True)
-    
-#     m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
-    
-#     # Buscar dados das bactérias
-#     bacterias_data = get_bacteria_data()
-    
-#     # Preparar dados para o HeatMap
-#     heatmap_data = [
-#         [bacteria["latitude"], bacteria["longitude"]]
-#         for bacteria in bacterias_data["bacterias"]
-#     ]
-    
-#     # Adicionar HeatMap ao mapa
-#     HeatMap(heatmap_data).add_to(m)
-    
-#     m.add_child(folium.LatLngPopup())
-#     sf.st_folium(m, width='100%', height=700)
-
 def map_page_main(): 
     data_from_db = db.get_plague_database('databases/plague.db')
 
