@@ -135,7 +135,7 @@ def timelife_page():
             help="Clique para ampliar"
         ),
         "Plague": st.column_config.TextColumn(
-            label="Praga",
+            label="Bacteria",
             width="medium"
         ),
         "Timestamp": st.column_config.TextColumn(

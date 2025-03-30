@@ -16,14 +16,14 @@ def wiki_page_file():
     st.title('Wiki Life', anchor=False)
 
     option = st.selectbox(
-        "Qual bacteria deseja pesquisar?",
+        "Qual bactéria deseja pesquisar?",
         list_tuple_name
     )
 
     get_info_plague = db.get_single_plague_database('databases/plague.db', option)
 
 
-    st.subheader("Patogenes: ", anchor=False)
+    st.subheader("Bactéria: ", anchor=False)
     st.title(get_info_plague[0][1], anchor=False)
     fake_col1, fake_col2, fake_col3 = st.columns(3)
     

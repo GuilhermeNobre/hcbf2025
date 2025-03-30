@@ -60,7 +60,7 @@ def micro_life_page():
                     return
         
         # Botão para iniciar o processo de publicação (agora no final da coluna 1)
-        if st.button("Publicar Análize?", use_container_width=True, disabled=not ('uploaded_image' in st.session_state)):
+        if st.button("Publicar Análise?", use_container_width=True, disabled=not ('uploaded_image' in st.session_state)):
             st.session_state['publish_clicked'] = True
 
         if 'publish_clicked' not in st.session_state:
