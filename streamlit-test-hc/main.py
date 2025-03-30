@@ -116,6 +116,7 @@ def main():
     
     Versão: 1.0.0
     """)
+    st.sidebar.markdown("API Version: [1.0.0](https://microlife.psf.med.br:8000/docs)")
 
     # Renderiza a página selecionada
     if st.session_state.page == 'Home':

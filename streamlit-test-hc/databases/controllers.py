@@ -71,6 +71,16 @@ def get_single_plague_database(path, plague):
     cursor.close()
     return data
 
+def get_single_plague_database_like(path, plague):
+    with sqlite3.connect(path) as conn:
+        cursor = conn.cursor()
+        cursor.execute(f'SELECT * FROM plague WHERE name like "%{plague}%"')
+
+        data = cursor.fetchall()
+    
+    cursor.close()
+    return data
+
 def get_plague_names(path):
     with sqlite3.connect(path) as conn:
         cursor = conn.cursor()
