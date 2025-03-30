@@ -34,9 +34,13 @@ def timelife_page():
     data = []
 
     for register in data_files:
-
         img_id = register[3] 
         path_image = os.path.join(database_image, f'{img_id}.jpg')
+
+        commnet = register[5]
+
+        if commnet is None:
+            commnet = "Nenhuma observação registrada."
 
         try:
             imagem = Image.open(path_image)
@@ -47,6 +51,7 @@ def timelife_page():
                     "Preview": img_base64,
                     "Plague": register[1], 
                     "Timestamp": datetime.fromtimestamp(register[2]).strftime('%d-%m-%Y'),
+                    "Comentario": commnet, 
                     "Timestamp_unix": register[2]
                 }
             )
@@ -62,6 +67,7 @@ def timelife_page():
         "Preview": st.column_config.ImageColumn(label="Imagem", width="medium"),
         "Plague": st.column_config.TextColumn(label="Praga"),
         "Timestamp": st.column_config.TextColumn(label="Data/Hora"),
+        "Comentario": st.column_config.TextColumn(label="Comentário")
     }
 
-    st.dataframe(data[["Preview", "Plague", "Timestamp"]], column_config=config, use_container_width=True, hide_index=True)
+    st.dataframe(data[["Preview", "Plague", "Timestamp", "Comentario"]], column_config=config, use_container_width=True, hide_index=True)

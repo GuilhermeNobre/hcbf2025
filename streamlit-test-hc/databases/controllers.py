@@ -3,7 +3,11 @@ import sqlite3
 def put_plague_register(data, path):
     with sqlite3.connect(path) as conn:
         cursor = conn.cursor()
-        cursor.executemany('INSERT INTO registers (plague, timestamp, id_image ,location) VALUES (?, ?, ?, ?)', data)
+
+        if data[0][4] == '' or data[0][4] == None or data[0][4] == ' ':
+            data[0][4] = 'Nenhuma observação'
+
+        cursor.executemany('INSERT INTO registers (plague, timestamp, id_image ,location, observations) VALUES (?, ?, ?, ?, ?)', data)
 
         conn.commit()
 

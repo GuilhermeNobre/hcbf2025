@@ -112,6 +112,12 @@ def map_single_plague(plague_name):
     m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
     
     bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
+
+    print(bacterias_data)
+    print('----------------')
+    if len(bacterias_data) == 0:
+        st.error("Nenhuma informação encontrada para a praga selecionada")
+        return
     #print('Data')
     #print(bacterias_data)
 
@@ -217,8 +223,9 @@ def heatmap_all():
 def heat_map_single_plague(plague_name):
     bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
 
-    name_plague = bacterias_data[0][1]
-    #print(name_plague) 
+    if len(bacterias_data) == 0:
+        st.error("Nenhuma informação encontrada para a praga selecionada")
+        return
 
     locations_info = []
 

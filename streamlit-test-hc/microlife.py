@@ -126,15 +126,14 @@ def micro_life_page():
                     date_string = datetime.strptime(str(date), "%Y-%m-%d").timestamp()
                         
                     # Salvar os dados no banco
-                    data = [(title, date_string, uuid_str, str(st.session_state['markers']))]
-                    print(data)
+                    data = [(title, date_string, uuid_str, str(st.session_state['markers']), description)]
                     put_plague_register(data, 'databases/registers_control.sqlite')
                         
                     # Limpar estados
                     st.session_state['publish_clicked'] = False
                     st.session_state['markers'] = []
                     st.success("Dados salvos com sucesso! ✅")
-                    
+
                     del st.session_state['plague_title']
                         
                 except Exception as e:
