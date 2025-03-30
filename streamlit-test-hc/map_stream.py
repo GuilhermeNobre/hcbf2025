@@ -113,8 +113,8 @@ def map_single_plague(plague_name):
     
     bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
 
-    print(bacterias_data)
-    print('----------------')
+    #print(bacterias_data)
+    #print('----------------')
     if len(bacterias_data) == 0:
         st.error("Nenhuma informação encontrada para a praga selecionada")
         return
@@ -131,7 +131,7 @@ def map_single_plague(plague_name):
             # print(j) /
             locations_info.append(j)
 
-    print(locations_info)
+    #print(locations_info)
 
     for i in range(len(locations_info)):
         popup_text = f"""
@@ -186,8 +186,8 @@ def heatmap_all():
         [255, 51, 51],   
     ]
 
-    print(heatmap_data)
-    print('----------------')
+    #print(heatmap_data)
+    #print('----------------')
 
     
     # Create the heatmap layer
