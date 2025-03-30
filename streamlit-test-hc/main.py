@@ -9,6 +9,7 @@ from timelife import *
 from landingpage import *
 from wikipage import *
 from microlife import micro_life_page
+from chatbot import chatbot_page
 
 # Configuração da página
 st.set_page_config(
@@ -104,6 +105,8 @@ def main():
         st.session_state.page = 'Page 2'
     if st.sidebar.button("🔍 Pesquisar", use_container_width=True):
         st.session_state.page = 'Procurar'
+    if st.sidebar.button("🤖 Life Bot", use_container_width=True):
+        st.session_state.page = 'Life Bot'
 
     # Adiciona informações na barra lateral
     st.sidebar.markdown("---")
@@ -127,6 +130,8 @@ def main():
         wiki_page_file()
     elif st.session_state.page == 'Microscope':
         micro_life_page()
+    elif st.session_state.page == 'Life Bot':
+        chatbot_page()
 
 if __name__ == '__main__':
     main()
