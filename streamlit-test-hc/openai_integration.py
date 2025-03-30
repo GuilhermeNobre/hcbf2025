@@ -19,10 +19,7 @@ def get_chatbot_response(prompt, conversation_history):
     Returns:
         str: Resposta do chatbot
     """
-    try:
-        # Buscar informações no banco de dados
-        db_info = get_bacteria_info(prompt)
-        
+    try:        
         # Preparar o histórico de mensagens para a API
         messages = [
             {"role": "system", "content": """Você é um assistente virtual especializado em bactérias e microbiologia.
