@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configurar a API key da OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
 
 def get_chatbot_response(prompt, conversation_history):
     """
@@ -66,8 +68,8 @@ def get_chatbot_response(prompt, conversation_history):
         messages.append({"role": "user", "content": prompt})
         
         # Fazer a chamada à API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        response = client.chat.completions.create(
+            model="gpt-4",
             messages=messages,
             temperature=0.7,
             max_tokens=500
@@ -96,3 +98,25 @@ def format_conversation_history(messages):
             "content": msg["content"]
         })
     return formatted_messages 
+
+def get_response(prompt, conversation_history=None):
+    """
+    Obtém uma resposta do assistente usando a API da OpenAI.
+    
+    Args:
+        prompt (str): A mensagem do usuário
+        conversation_history (list, optional): Histórico da conversa
+    
+    Returns:
+        str: Resposta do assistente
+    """
+    if conversation_history is None:
+        conversation_history = []
+    
+    return get_chatbot_response(prompt, conversation_history)
+
+# my_assistants = client.beta.assistants.list(
+#     order="desc",
+#     limit="20",
+# )
+# print(my_assistants.data)

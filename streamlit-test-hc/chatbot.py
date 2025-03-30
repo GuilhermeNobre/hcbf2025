@@ -39,6 +39,3 @@ def chatbot_page():
                 # Exibir e salvar resposta
                 st.markdown(response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-
-if __name__ == "__main__":
-    chatbot_page() 
