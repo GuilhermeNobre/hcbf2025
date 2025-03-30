@@ -74,7 +74,7 @@ def map_all_infos():
     #     <p>Visualização geográfica das áreas mais afetadas por cada tipo de bactéria, permitindo identificar padrões e focos de contaminação.</p>
     # """, unsafe_allow_html=True)
     
-    m = folium.Map(location=[42.5531, 48.1641], zoom_start=3, disable_3d=True)
+    m = folium.Map(location=[-9.8975, -50.3613], zoom_start=3, disable_3d=True)
     
     # Buscar dados das bactérias
     bacterias_data = get_bacteria_data()
@@ -109,7 +109,7 @@ def map_all_infos():
 
 def map_single_plague(plague_name):
 
-    m = folium.Map(location=[42.5531, 48.1641], zoom_start=2, disable_3d=True)
+    m = folium.Map(location=[-9.8975, -50.3613], zoom_start=2, disable_3d=True)
     
     bacterias_data = db.get_plague_register_by_plague('databases/registers_control.sqlite', plague_name)
     
