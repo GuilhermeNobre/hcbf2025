@@ -83,11 +83,13 @@ def map_all_infos():
         
         #icon = '🦠' if bacteria["tipo"] == "Gram-negativa" else '🧫'
         
+        lat_format = "{:.3f}".format(bacteria["latitude"])
+        lon_format = "{:.3f}".format(bacteria["longitude"])
 
         popup_text = f"""
             <b>{bacteria['nome']}</b><br>
             Data: {bacteria['data_deteccao']}<br>
-            Coordenadas: {bacteria['latitude']}, {bacteria['longitude']}
+            Coordenadas: {lat_format}, {lon_format}
         """
         # Localização: {bacteria['localizacao']}<br> 
         # Adicionar o marcador com coordenadas fixas
