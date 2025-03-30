@@ -10,16 +10,17 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
 
-def get_chatbot_response(prompt, conversation_history):
+def get_chatbot_response(prompt, conversation_history, stream=False):
     """
     Obtém uma resposta do chatbot usando a API da OpenAI e dados do banco.
     
     Args:
         prompt (str): A mensagem do usuário
         conversation_history (list): Histórico da conversa
+        stream (bool): Se True, retorna um gerador para streaming da resposta
     
     Returns:
-        str: Resposta do chatbot
+        str ou generator: Resposta do chatbot ou gerador de tokens
     """
     try:        
         # Preparar o histórico de mensagens para a API
@@ -72,11 +73,15 @@ def get_chatbot_response(prompt, conversation_history):
             model="gpt-4",
             messages=messages,
             temperature=0.7,
-            max_tokens=500
+            max_tokens=500,
+            stream=stream
         )
         
-        # Extrair e retornar a resposta
-        return response.choices[0].message.content
+        if stream:
+            return response
+        else:
+            # Extrair e retornar a resposta
+            return response.choices[0].message.content
         
     except Exception as e:
         return f"Desculpe, ocorreu um erro ao processar sua mensagem: {str(e)}"
@@ -97,7 +102,7 @@ def format_conversation_history(messages):
             "role": msg["role"],
             "content": msg["content"]
         })
-    return formatted_messages 
+    return formatted_messages
 
 def get_response(prompt, conversation_history=None):
     """
