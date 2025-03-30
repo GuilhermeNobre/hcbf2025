@@ -1,7 +1,6 @@
 import openai
 import os
 from dotenv import load_dotenv
-from database import get_bacteria_info, get_all_bacteria
 
 # Carregar variáveis de ambiente
 load_dotenv()
