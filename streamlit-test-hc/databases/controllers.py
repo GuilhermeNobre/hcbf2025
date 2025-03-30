@@ -13,14 +13,29 @@ def put_plague_register(data, path):
 
     cursor.close()
 
-def get_plague_register(path, limite=False):
+def get_plague_register(path, limite=False, start_date=None, end_date=None):
     with sqlite3.connect(path) as conn:
         cursor = conn.cursor()
-        if not limite:
-            cursor.execute('SELECT * FROM registers')
-        else:
-            cursor.execute(f'SELECT * FROM registers LIMIT {limite}')
-
+        
+        query = 'SELECT * FROM registers'
+        params = []
+        
+        if start_date or end_date:
+            conditions = []
+            if start_date:
+                conditions.append('timestamp >= ?')
+                params.append(start_date.timestamp())
+            if end_date:
+                conditions.append('timestamp <= ?')
+                params.append(end_date.timestamp())
+            
+            if conditions:
+                query += ' WHERE ' + ' AND '.join(conditions)
+        
+        if limite:
+            query += f' LIMIT {limite}'
+            
+        cursor.execute(query, params)
         data = cursor.fetchall()
     
     cursor.close()
@@ -44,7 +59,7 @@ def get_plague_database(path):
         data = cursor.fetchall()
     
     cursor.close()
-    return data 
+    return data
 
 def get_single_plague_database(path, plague):
     with sqlite3.connect(path) as conn:
@@ -54,7 +69,7 @@ def get_single_plague_database(path, plague):
         data = cursor.fetchall()
     
     cursor.close()
-    return data 
+    return data
 
 def get_plague_names(path):
     with sqlite3.connect(path) as conn:
