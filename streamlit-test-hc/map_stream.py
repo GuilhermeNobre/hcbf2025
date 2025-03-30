@@ -76,22 +76,20 @@ def map_all_infos():
     
     m = folium.Map(location=[-9.8975, -50.3613], zoom_start=3, disable_3d=True)
     
-    # Buscar dados das bactérias
+
     bacterias_data = get_bacteria_data()
     
-    # Adicionar marcadores baseados nos dados reais
     for bacteria in bacterias_data["bacterias"]:
-        # Escolher ícone baseado no tipo
-        icon = '🦠' if bacteria["tipo"] == "Gram-negativa" else '🧫'
         
-        # Criar popup com informações
+        #icon = '🦠' if bacteria["tipo"] == "Gram-negativa" else '🧫'
+        
+
         popup_text = f"""
             <b>{bacteria['nome']}</b><br>
-            Localização: {bacteria['localizacao']}<br>
             Data: {bacteria['data_deteccao']}<br>
             Coordenadas: {bacteria['latitude']}, {bacteria['longitude']}
         """
-        
+        # Localização: {bacteria['localizacao']}<br> 
         # Adicionar o marcador com coordenadas fixas
         folium.Marker(
             location=[bacteria["latitude"], bacteria["longitude"]],
@@ -179,7 +177,7 @@ def map_single_plague(plague_name):
 
 
 def heatmap_all():
-    # Get bacteria data (assuming this function exists)
+
     bacterias_data = get_bacteria_data()
 
     # Prepare the data in a format suitable for pydeck
@@ -201,7 +199,7 @@ def heatmap_all():
     #print('----------------')
 
     
-    # Create the heatmap layer
+
     layer = pdk.Layer(
         "HeatmapLayer",
         data=heatmap_data,
@@ -212,7 +210,7 @@ def heatmap_all():
         color_range=COLOR_BREWER_MODIFIED_SCALE,
     )
 
-    # Set the initial view state
+
     view_state = pdk.ViewState(
         latitude=-12.8975,
         longitude=-50.3613,
@@ -220,14 +218,13 @@ def heatmap_all():
         pitch=0
     )
 
-    # Create the deck.gl visualization
     r = pdk.Deck(
         layers=[layer],
         initial_view_state=view_state,
         map_style="mapbox://styles/mapbox/light-v9"  # Optional: requires Mapbox token
     )
 
-    # Display in Streamlit
+
     st.pydeck_chart(r)
 
 
