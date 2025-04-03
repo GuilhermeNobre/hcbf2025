@@ -20,7 +20,7 @@ def image_page():
     st.title('Image Page')
     st.write("Streamlit is also great for more traditional ML use cases like computer vision or NLP. Here's an example of edge detection using OpenCV. 👁️")
 
-    uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+    uploaded_file = st.file_uploader("Envie uma imagem", type=["jpg", "jpeg", "png"])
     
     if uploaded_file is not None:
         try:
@@ -51,7 +51,7 @@ def image_page():
     names_and_score = sorted(names_and_score, key=lambda x: x[1], reverse=True)
     names_and_score = [(name, f"{score*100:.2f}%") for name, score in names_and_score]
     
-    print(names_and_score)
+    #print(names_and_score)
 
     df = pd.DataFrame(names_and_score, columns=["Plague", "Score"])
 
@@ -104,17 +104,17 @@ def image_page():
                 st.write(f"Coordenadas capturadas: Latitude {lat}, Longitude {lng}")
             st.session_state['map_center'] = [lat, lng]
 
-        date = st.date_input("When did you see this plague?", key="date_input")
+        date = st.date_input("Quando você viu esta bactéria?", key="date_input")
 
         if st.button("Save data"):
             if not date:
-                st.error("Please select a date.")
+                st.error("Por favor, selecione uma data.")
                 return
             if not title:
-                st.error("Please enter a title.")
+                st.error("Por favor, insira um título.")
                 return
             if not st.session_state['markers']:
-                st.error("Please select at least one marker.")
+                st.error("Por favor, selecione pelo menos um marcador.")
                 return
 
             title = st.session_state['plague_title']
@@ -128,11 +128,12 @@ def image_page():
             uuid_str = str(uuid.uuid4())
 
             data = [(title, date_string, uuid_str ,str(markers))]
+            #print(data)
             
             try:
                 image.save(f'database_image/{uuid_str}.jpg')
                 put_plague_register(data, 'databases/registers_control.sqlite')
-                st.success('This is a success message!', icon="✅")
+                st.success('Dados salvos com sucesso!', icon="✅")
 
                 del st.session_state['plague_title']
             except Exception as e:
